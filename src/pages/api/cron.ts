@@ -44,18 +44,18 @@ export const get: APIRoute = async () => {
     const table = await genBillingsTable(
       billings.sort((a, b) => b.rate - a.rate)
     )
-    const titles = ["帐号余额充足", "没有帐号不可用"]
+    const titles = ["帳號餘額充足", "沒有帳號不可用"]
     const descs = [table, ""]
-    if (billings.some(k => k.rate < 0.05)) titles[0] = "有帐号余额已少于 5%"
+    if (billings.some(k => k.rate < 0.05)) titles[0] = "有帳號餘額已少於 5%"
     if (bannedKeys.length) {
-      titles[1] = "有帐号不可用"
+      titles[1] = "有帳號不可用"
       descs[1] =
-        "\n\n以下帐号不可用，请检查\n\n" +
+        "\n\n以下帳號不可用，請檢查\n\n" +
         bannedKeys.map(k => "- " + k.slice(0, 8)).join("\n")
     }
-    await push(titles.join("，"), descs.join("\n\n"))
+    // await push(titles.join("，"), descs.join("\n\n"))
   } catch (e) {
-    await push(`运行错误\n${String(e)}`)
+    // await push(`運行錯誤\n${String(e)}`)
   }
   return new Response(`ok`)
 }
@@ -88,17 +88,17 @@ async function checkBan(key: string) {
   }
 }
 
-async function push(title: string, desp?: string) {
-  if (sendKey)
-    await fetch(`https://sctapi.ftqq.com/${sendKey}.send`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify({
-        title,
-        desp,
-        channel: Number.isInteger(sendChannel) ? Number(sendChannel) : 9
-      })
-    })
-}
+// async function push(title: string, desp?: string) {
+//   if (sendKey)
+//     await fetch(`https://sctapi.ftqq.com/${sendKey}.send`, {
+//       method: "POST",
+//       headers: {
+//         "Content-Type": "application/json"
+//       },
+//       body: JSON.stringify({
+//         title,
+//         desp,
+//         channel: Number.isInteger(sendChannel) ? Number(sendChannel) : 9
+//       })
+//     })
+// }

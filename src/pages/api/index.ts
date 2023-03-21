@@ -63,21 +63,21 @@ export const post: APIRoute = async context => {
     }
 
     if (pwd && pwd !== password) {
-      throw new Error("密码错误，请联系网站管理员。")
+      throw new Error("密碼錯誤，請聯繫網站管理員。")
     }
 
     if (!messages?.length) {
-      throw new Error("没有输入任何文字。")
+      throw new Error("沒有輸入任何文字。")
     } else {
       const content = messages.at(-1)!.content.trim()
-      if (content.startsWith("查询填写的 Key 的余额")) {
+      if (content.startsWith("查詢填寫的 Key 的餘額")) {
         if (key !== localKey) {
           const billings = await Promise.all(
             splitKeys(key).map(k => fetchBilling(k))
           )
           return new Response(await genBillingsTable(billings))
         } else {
-          throw new Error("没有填写 OpenAI API key，不会查询内置的 Key。")
+          throw new Error("沒有填寫 OpenAI API key，不會查詢內置的 Key。")
         }
       } else if (content.startsWith("sk-")) {
         const billings = await Promise.all(
@@ -89,7 +89,7 @@ export const post: APIRoute = async context => {
 
     const apiKey = randomKey(splitKeys(key))
 
-    if (!apiKey) throw new Error("没有填写 OpenAI API key，或者 key 填写错误。")
+    if (!apiKey) throw new Error("沒有填寫 OpenAI API key，或者 key 填寫錯誤。")
 
     const tokens = messages.reduce((acc, cur) => {
       const tokens = countTokens(cur.content)
@@ -99,9 +99,9 @@ export const post: APIRoute = async context => {
     if (tokens > (Number.isInteger(maxTokens) ? maxTokens : 3072)) {
       if (messages.length > 1)
         throw new Error(
-          `由于开启了连续对话选项，导致本次对话过长，请清除部分内容后重试，或者关闭连续对话选项。`
+          `由於開啓了連續對話選項，導致本次對話過長，請清除部分內容後重試，或者關閉連續對話選項。`
         )
-      else throw new Error("太长了，缩短一点吧。")
+      else throw new Error("太長了，縮短一點吧。")
     }
 
     const encoder = new TextEncoder()
@@ -226,7 +226,7 @@ export async function genBillingsTable(billings: Billing[]) {
     )
     .join("\n")
 
-  return `| Key  | 剩余 | 已用 | 总额度 |
+  return `| Key  | 剩餘 | 已用 | 總額度 |
 | ---- | ---- | ---- | ------ |
 ${table}
 `

@@ -14,7 +14,7 @@ export default function MessageAction(props: {
         <Switch>
           <Match when={props.role === "assistant"}>
             <ActionItem
-              label="复制"
+              label="複製"
               onClick={() => {
                 setCopied(true)
                 props.copy()
@@ -25,14 +25,14 @@ export default function MessageAction(props: {
           </Match>
           <Match when={props.role === "user"}>
             <ActionItem
-              label="编辑"
+              label="編輯"
               onClick={props.edit}
               icon={"i-carbon:edit"}
             />
           </Match>
         </Switch>
         <ActionItem
-          label="删除"
+          label="刪除"
           onClick={props.del}
           icon={"i-carbon:trash-can"}
         />
